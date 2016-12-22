@@ -25,8 +25,8 @@ class ZabbixFlume():
             return self.ret_result.text
 
     def get_cache(self, ttl=60):
-        cache = '{0}/flume-stats.json'.format(self.tmp_cache_dir)
-        lock = '{0}/flume-stats.lock'.format(self.tmp_cache_dir)
+        cache = '{0}/flume-stats-{1}.json'.format(self.tmp_cache_dir, self.address)
+        lock = '{0}/flume-stats-{1}.lock'.format(self.tmp_cache_dir, self.address)
         jtime = os.path.exists(cache) and os.path.getmtime(cache) or 0
         if time.time() - jtime > ttl and not os.path.exists(lock):
             open(lock, 'a').close()
@@ -84,4 +84,3 @@ if __name__ == '__main__':
         flow = args.check[0]
         metric = args.check[1]
         print zf.check_metrics(flow, metric)
-

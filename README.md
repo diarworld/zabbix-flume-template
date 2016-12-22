@@ -1,10 +1,14 @@
 # zabbix-flume-template
-Zabbix template and externalscript for monitoring Apache Flume via http.
+Zabbix autodiscovery template and externalscript for monitoring Apache Flume via http.
 
 
 ### Installation
-* Put check_flume_metrics.py to all Apache Flume hosts.
-* Put userparameter_flume.conf to /etc/zabbix/zabbix_agentd.d/userparameter_flume.conf (Modify it, if you use different path for externascript)
+* Put check_flume_metrics.py to all Apache Flume hosts. By default directory is: /usr/lib/zabbix/externalscripts/. Change permissions to run this script:
+```
+$ chmod +x /usr/lib/zabbix/externalscripts/check_flume_metrics.py
+```
+* Put userparameter_flume.conf to /etc/zabbix/zabbix_agentd.d/userparameter_flume.conf (Modify this config, if you use different path for externascript)
+* restart zabbix agent on Flume hosts.
 * Import zabbix-flume-template to your Zabbix.
 
 
@@ -28,12 +32,18 @@ optional arguments:
   --port PORT, -p PORT  Flume http port. Default is: 41414
 ```
 
-#### Example
+If you installed zabbix_get package, you may run :
+```
+zabbix_get -s flumehost1 -k flume.check[41414,"CHANNEL.prod-channel","ChannelFillPercentage"]
+
+```
+
+#### Examples
 
 Discovery:
 
 ```
-$/etc/zabbix/externalscripts/check_flume_metrics.py --discover SOURCE -a flumehost1
+$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --discover SOURCE -a flumehost1
 {"data": [{"{#NAME}": "SOURCE.test-source"}, {"{#NAME}": "SOURCE.prod-source"}, {"{#NAME}": "SOURCE.third-source"}]}
 
 ```
@@ -41,6 +51,9 @@ $/etc/zabbix/externalscripts/check_flume_metrics.py --discover SOURCE -a flumeho
 Check
 
 ```
-$/etc/zabbix/externalscripts/check_flume_metrics.py --check SOURCE.test-source KafkaEventGetTimer -a flumehost1
+$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --check SOURCE.test-source KafkaEventGetTimer -a flumehost1
 28030074
 ```
+
+#### Notes
+* Tested with Zabbix 3.2 and Flume CDH-5.7.0-1.cdh5.7.0.p0.45 version.
