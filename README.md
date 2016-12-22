@@ -10,7 +10,7 @@ $ chmod +x /usr/lib/zabbix/externalscripts/check_flume_metrics.py
 * Put userparameter_flume.conf to /etc/zabbix/zabbix_agentd.d/userparameter_flume.conf (Modify this config, if you use different path for externascript)
 * restart zabbix agent on Flume hosts.
 * Import zabbix-flume-template to your Zabbix.
-
+* If you change Apache Flume parameter -Dflume.monitoring.port (default 41414), then you need to edit monitoring port in Zabbix: Configuration -> Templates -> Template App Flume -> Macros -> {$FLUME_PORT}
 
 ### Test insallation
 
@@ -43,15 +43,15 @@ zabbix_get -s flumehost1 -k flume.check[41414,"CHANNEL.prod-channel","ChannelFil
 Discovery:
 
 ```
-$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --discover SOURCE -a flumehost1
+$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --discover SOURCE
 {"data": [{"{#NAME}": "SOURCE.test-source"}, {"{#NAME}": "SOURCE.prod-source"}, {"{#NAME}": "SOURCE.third-source"}]}
 
 ```
 
-Check
+Check:
 
 ```
-$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --check SOURCE.test-source KafkaEventGetTimer -a flumehost1
+$ sudo -u zabbix /etc/zabbix/externalscripts/check_flume_metrics.py --check SOURCE.test-source KafkaEventGetTimer
 28030074
 ```
 
