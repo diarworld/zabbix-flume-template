@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.2</version>
-    <date>2016-12-22T11:03:07Z</date>
+    <date>2016-12-22T13:35:20Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -76,7 +76,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.channels.discovery[{$FLUME_PORT}]</key>
-                    <delay>3600</delay>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -161,7 +161,7 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -205,7 +205,7 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -249,7 +249,7 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -293,7 +293,95 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Flume</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <application_prototypes/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#NAME} Channel put attempts success diff</name>
+                            <type>0</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>flume.diff[{$FLUME_PORT},{#NAME},EventPutAttemptCount,EventPutSuccessCount]</key>
+                            <delay>60</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <delta>2</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Flume</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <application_prototypes/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#NAME} Event take attempts success diff</name>
+                            <type>0</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>flume.diff[{$FLUME_PORT},{#NAME},EventTakeAttemptCount,EventTakeSuccessCount]</key>
+                            <delay>60</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -348,10 +436,10 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventPutAttemptCount].change()} * 0.9 &gt; {Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventPutSuccessCount].change()}</expression>
+                            <expression>{Template App Flume:flume.diff[{$FLUME_PORT},{#NAME},EventPutAttemptCount,EventPutSuccessCount].last()} &gt; 1000</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>{#NAME} Last minute event put attempts 10% greater than event put success</name>
+                            <name>{#NAME} Last minute event put attempts greater than event put success</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -370,10 +458,10 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventTakeAttemptCount].change()} * 0.9 &gt; {Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventTakeSuccessCount].change()}</expression>
+                            <expression>{Template App Flume:flume.diff[{$FLUME_PORT},{#NAME},EventTakeAttemptCount,EventTakeSuccessCount].last()} &gt; 1000</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>{#NAME} Last minute event take attempts 10% greater than event take success</name>
+                            <name>{#NAME} Last minute event take attempts greater than event take success</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -434,7 +522,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.sinks.discovery[{$FLUME_PORT}]</key>
-                    <delay>3600</delay>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -519,7 +607,7 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -563,7 +651,51 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Flume</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <application_prototypes/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#NAME} Event drain attempt success diff</name>
+                            <type>0</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>flume.diff[{$FLUME_PORT},{#NAME},EventDrainAttemptCount,EventDrainSuccessCount]</key>
+                            <delay>60</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -618,10 +750,10 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventDrainAttemptCount].change()} * 0.9 &gt; {Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventDrainSuccessCount].change()}</expression>
+                            <expression>{Template App Flume:flume.diff[{$FLUME_PORT},{#NAME},EventDrainAttemptCount,EventDrainSuccessCount].last()} &gt; 1000</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>{#NAME} Last minute event drain attempts 10% greater than event drain success</name>
+                            <name>{#NAME} Last minute event drain attempts greater than event drain success</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -682,7 +814,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.sources.discovery[{$FLUME_PORT}]</key>
-                    <delay>3600</delay>
+                    <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -723,7 +855,7 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -767,7 +899,51 @@
                             <value_type>3</value_type>
                             <allowed_hosts/>
                             <units/>
-                            <delta>0</delta>
+                            <delta>2</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Flume</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <application_prototypes/>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#NAME} Events received accepted diff</name>
+                            <type>0</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>flume.diff[{$FLUME_PORT},{#NAME},EventReceivedCount,EventAcceptedCount]</key>
+                            <delay>60</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <delta>2</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
                             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -800,10 +976,10 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventReceivedCount].change()} * 0.9 &gt; {Template App Flume:flume.check[{$FLUME_PORT},{#NAME},EventAcceptedCount].change()}</expression>
+                            <expression>{Template App Flume:flume.diff[{$FLUME_PORT},{#NAME},EventReceivedCount,EventAcceptedCount].last()} &gt; 1000</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>{#NAME} Last minute received events 10% greater than accepted events</name>
+                            <name>{#NAME} Last minute received events greater than accepted events</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>

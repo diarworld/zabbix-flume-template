@@ -25,8 +25,10 @@ class ZabbixFlume():
             return self.ret_result.text
 
     def get_cache(self, ttl=60):
-        cache = '{0}/flume-stats-{1}.json'.format(self.tmp_cache_dir, self.address)
-        lock = '{0}/flume-stats-{1}.lock'.format(self.tmp_cache_dir, self.address)
+        cache = '{0}/flume-stats-{1}.json'.format(
+            self.tmp_cache_dir, self.address)
+        lock = '{0}/flume-stats-{1}.lock'.format(
+            self.tmp_cache_dir, self.address)
         jtime = os.path.exists(cache) and os.path.getmtime(cache) or 0
         if time.time() - jtime > ttl and not os.path.exists(lock):
             open(lock, 'a').close()
@@ -61,13 +63,30 @@ class ZabbixFlume():
                 r = -1
         return r
 
+    def diff_metrics(self, flow, metric1, metric2):
+        cache = self.get_cache()
+        r = m1 = m2 = 0
+        for k in cache:
+            if k == flow:
+                if metric1 in cache[k]:
+                    m1 = cache[k].get(metric1)
+                if metric2 in cache[k]:
+                    m2 = cache[k].get(metric2)
+            elif k == "error":
+                r = -1
+        if r != -1:
+            r = int(m1) - int(m2)
+        return r
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Simple python script for checking flume metrcis via http')
     parser.add_argument('--discover', '-d', metavar=('type'),
                         help='Discover all flume flows by type')
     parser.add_argument('--check', '-c', nargs=2,
-                        metavar=('flow', 'metric'), help='Check specified metric')
+                        metavar=('FLOW', 'METRIC'), help='Check specified metric')
+    parser.add_argument('--diff', '-f', nargs=3,
+                        metavar=('FLOW', 'METRIC1', 'METRIC2'), help='Check difference between two specified metrics')
     parser.add_argument('--address', '-a',
                         help='Flume address. Default is: localhost')
     parser.add_argument('--port', '-p', type=int,
@@ -84,3 +103,8 @@ if __name__ == '__main__':
         flow = args.check[0]
         metric = args.check[1]
         print zf.check_metrics(flow, metric)
+    if args.diff is not None:
+        flow = args.diff[0]
+        metric1 = args.diff[1]
+        metric2 = args.diff[2]
+        print zf.diff_metrics(flow, metric1, metric2)
