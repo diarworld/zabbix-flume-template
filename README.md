@@ -16,7 +16,8 @@ $ chmod +x /usr/lib/zabbix/externalscripts/check_flume_metrics.py
 
 
 ```
-usage: check_flume_metrics.py [-h] [--discover type] [--check flow metric]
+usage: check_flume_metrics.py [-h] [--discover type] [--check FLOW METRIC]
+                              [--diff FLOW METRIC1 METRIC2]
                               [--address ADDRESS] [--port PORT]
 
 Simple python script for checking flume metrcis via http
@@ -25,8 +26,10 @@ optional arguments:
   -h, --help            show this help message and exit
   --discover type, -d type
                         Discover all flume flows by type
-  --check flow metric, -c flow metric
+  --check FLOW METRIC, -c FLOW METRIC
                         Check specified metric
+  --diff FLOW METRIC1 METRIC2, -f FLOW METRIC1 METRIC2
+                        Check difference between two specified metrics
   --address ADDRESS, -a ADDRESS
                         Flume address. Default is: localhost
   --port PORT, -p PORT  Flume http port. Default is: 41414
