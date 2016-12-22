@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.2</version>
-    <date>2016-12-22T13:35:20Z</date>
+    <date>2016-12-22T14:09:52Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -76,7 +76,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.channels.discovery[{$FLUME_PORT}]</key>
-                    <delay>60</delay>
+                    <delay>3600</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -522,7 +522,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.sinks.discovery[{$FLUME_PORT}]</key>
-                    <delay>60</delay>
+                    <delay>3600</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -814,7 +814,7 @@
                     <snmp_community/>
                     <snmp_oid/>
                     <key>flume.sources.discovery[{$FLUME_PORT}]</key>
-                    <delay>60</delay>
+                    <delay>3600</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
