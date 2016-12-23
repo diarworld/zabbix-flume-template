@@ -1,4 +1,8 @@
 #!/usr/bin/python
+'''Python module to query the Apache Flume metrics and get
+results that can then be used by Zabbix.
+https://github.com/diarworld/zabbix-flume-template
+'''
 import argparse
 import requests
 import json
@@ -8,6 +12,7 @@ import time
 
 
 class ZabbixFlume():
+    '''Class for Apache Flume monitoring.'''
 
     def __init__(self):
         self.address = 'localhost'
@@ -17,6 +22,7 @@ class ZabbixFlume():
         self.final_result_dict = {}
 
     def collect_metrics(self):
+        '''Call the metrics URL and return results JSON.'''
         self.final_result_dict = {}
         self.api_address = 'http://{0}:{1}/metrics'.format(
             self.address, self.port)
@@ -25,6 +31,7 @@ class ZabbixFlume():
             return self.ret_result.text
 
     def get_cache(self, ttl=60):
+        '''Get and save metrics JSON to temp file, update temp file if it older than 60 seconds (ttl).'''
         cache = '{0}/flume-stats-{1}.json'.format(
             self.tmp_cache_dir, self.address)
         lock = '{0}/flume-stats-{1}.lock'.format(
@@ -45,6 +52,7 @@ class ZabbixFlume():
         return json.load(open(cache))
 
     def discovery(self, flows):
+        '''Discover all Apache Flume flows (sources, channels and sinks). Returns Zabbix parsable JSON.'''
         d = {'data': []}
         cache = self.get_cache()
         for k in cache:
@@ -53,6 +61,7 @@ class ZabbixFlume():
         print json.dumps(d)
 
     def check_metrics(self, flow, metric):
+        '''Check specified Apache Flume metric. Returns metric value.'''
         cache = self.get_cache()
         r = 0
         for k in cache:
@@ -64,6 +73,7 @@ class ZabbixFlume():
         return r
 
     def diff_metrics(self, flow, metric1, metric2):
+        '''Check difference between two specified Apache Flume metrics in the same flow. Returns difference value.'''
         cache = self.get_cache()
         r = m1 = m2 = 0
         for k in cache:
@@ -79,6 +89,7 @@ class ZabbixFlume():
         return r
 
 if __name__ == '__main__':
+    '''Command-line parameters and decoding for Zabbix use/consumption.'''
     parser = argparse.ArgumentParser(
         description='Simple python script for checking flume metrcis via http')
     parser.add_argument('--discover', '-d', metavar=('type'),
